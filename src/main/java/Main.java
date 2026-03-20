@@ -36,7 +36,7 @@ public class Main {
             }
             //do operation on second number
             assemblyOutput += equation[2] + ", i\n";
-            machineOutput += "00 " + hex.toHexDigits(Byte.parseByte(equation[2]));
+            machineOutput += "00 " + hex.toHexDigits(Byte.parseByte(equation[2])).toUpperCase() + " ";
             //store answer in accumulator
             assemblyOutput += "STWA " + equation[0] + ", d\nSTOP\n\n" + equation[0] + ": .WORD 0\n.END";
             machineOutput += "E1 00 0A 00 00 00 zz";
