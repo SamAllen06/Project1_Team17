@@ -12,8 +12,15 @@ public class Main {
         HexFormat hex = HexFormat.of();
         String assemblyOutput = "";
         String machineOutput = "";
+        String instructions = """
+                If you wish to print a line, type it like this:
+                    System.out.println("Your text");
+                If you wish to do math, type it like this:
+                    result=num1±num2;
+                """;
 
-        System.out.println("Input Java Code Here:");
+        System.out.print(instructions);
+        System.out.print("Input Java Code Here: ");
         String input = scanner.nextLine();
 
         if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")){
@@ -42,8 +49,7 @@ public class Main {
             machineOutput += "E1 00 0A 00 00 00 zz";
         } else {
             System.out.println("    Invalid Entry:");
-            System.out.println("    If you wish to print a line, type it like this:\nSystem.out.println(\"Your text\");");
-            System.out.println("    If you wish to do math, type it like this:\nresult=num1±num2;\n");
+            System.out.println(instructions);
         }
 
         System.out.println("    Assembly Code: \n" + assemblyOutput);
