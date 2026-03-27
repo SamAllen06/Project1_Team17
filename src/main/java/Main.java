@@ -16,9 +16,27 @@ public class Main {
         System.out.println("Input Java Code Here:");
         String input = scanner.nextLine();
 
-        if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")){
+        if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")) {
             String command = input.split("\"")[1];
             System.out.println(command);
+
+            StringBuilder assemblyOutputBuilder = new StringBuilder();
+            StringBuilder machineOutputBuilder = new StringBuilder();
+            for (int i = 0; i < command.length(); i++){
+                char c = command.charAt(i);
+                assemblyOutputBuilder.append("LDBA ").append(c).append(", i\nSTBA 0xFC16, d \\n");
+                machineOutputBuilder.append("D0 00 ").append(hex.toHexDigits(Byte.parseByte(command))).append("\\n F1 FC 16 \\n");
+
+
+            }
+            machineOutput = machineOutputBuilder.toString();
+            assemblyOutput = assemblyOutputBuilder.toString();
+
+            assemblyOutput +=  ", d\nSTOP\n\n" +  "\n.END";
+
+
+
+
             //TODO: finish this part
         } else if (input.contains("=")){
             //split up equation into key elements
