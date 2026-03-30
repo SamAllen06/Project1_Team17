@@ -1,10 +1,8 @@
+//Team Name: Team17
+//Members: Sam Allen, Ashelyn Reilly
+
 import java.util.HexFormat;
 import java.util.Scanner;
-
-/* How to convert string to hex:
-HexFormat hex = HexFormat.of();
-System.out.println(hex.toHexDigits(Byte.parseByte(string)));
-*/
 
 public class Main {
     public static void main(String[] args){
@@ -13,7 +11,10 @@ public class Main {
         String assemblyOutput = "";
         String machineOutput = "";
 
-        System.out.println("Input Java Code Here:");
+        System.out.println("""
+                Input Java Code Here:
+                If you want to print, type it like this: System.out.println("Your message");
+                If you want to add or subtract, type it like this: result=3+5;""");
         String input = scanner.nextLine();
 
         if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")) {
