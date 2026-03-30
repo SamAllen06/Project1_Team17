@@ -1,13 +1,11 @@
+//Team Name: Team17
+//Members: Sam Allen, Ashelyn Reilly
+
 import java.util.HexFormat;
 import java.util.Scanner;
 
-/* How to convert string to hex:
-HexFormat hex = HexFormat.of();
-System.out.println(hex.toHexDigits(Byte.parseByte(string)));
-*/
-
 public class Main {
-    static void main(){
+    public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         HexFormat hex = HexFormat.of();
         String assemblyOutput = "";
@@ -23,29 +21,34 @@ public class Main {
         System.out.print("Input Java Code Here: ");
         String input = scanner.nextLine();
 
+        //Process print command
         if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")) {
+            //Grab user message from input
             String command = input.split("\"")[1];
             System.out.println(command);
 
             StringBuilder assemblyOutputBuilder = new StringBuilder();
             StringBuilder machineOutputBuilder = new StringBuilder();
+            //Process output for one symbol at a time
             for (int i = 0; i < command.length(); i++){
                 char c = command.charAt(i);
-                assemblyOutputBuilder.append("LDBA ").append(c).append(", i\nSTBA 0xFC16, d \\n");
-                machineOutputBuilder.append("D0 00 ").append(hex.toHexDigits(Byte.parseByte(command))).append("\\n F1 FC 16 \\n");
+                //convert symbol to unicode
+                int unicodeValue = (int) c;
+                //convert unicode to hexadecimal
+                String hexValue = hex.toHexDigits((byte) unicodeValue);
 
-
+                //add output for a single symbol
+                assemblyOutputBuilder.append("LDBA 0x00").append(hexValue).append(", i\nSTBA 0xFC16, d \n");
+                machineOutputBuilder.append("D0 00 ").append(hexValue).append(" F1 FC 16 \n");
             }
+            //add output to end the command
+            assemblyOutputBuilder.append("\nSTOP\n\n" + "\n.END");
+            machineOutputBuilder.append("00 zz");
             machineOutput = machineOutputBuilder.toString();
             assemblyOutput = assemblyOutputBuilder.toString();
-
-            assemblyOutput +=  ", d\nSTOP\n\n" +  "\n.END";
-
-
-
-
-            //TODO: finish this part
-        } else if (input.contains("=")){
+        }
+        //Process math command
+        else if (input.contains("=")){
             //split up equation into key elements
             String[] equation = input.replaceAll(" ", "").split("[=+\\-;]");
             //load first number to accumulator
