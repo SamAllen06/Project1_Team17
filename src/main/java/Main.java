@@ -7,7 +7,7 @@ System.out.println(hex.toHexDigits(Byte.parseByte(string)));
 */
 
 public class Main {
-    static void main(){
+    public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         HexFormat hex = HexFormat.of();
         String assemblyOutput = "";
@@ -24,20 +24,16 @@ public class Main {
             StringBuilder machineOutputBuilder = new StringBuilder();
             for (int i = 0; i < command.length(); i++){
                 char c = command.charAt(i);
-                assemblyOutputBuilder.append("LDBA ").append(c).append(", i\nSTBA 0xFC16, d \\n");
-                machineOutputBuilder.append("D0 00 ").append(hex.toHexDigits(Byte.parseByte(command))).append("\\n F1 FC 16 \\n");
+                int unicodeValue = (int) c;
+                String hexValue = hex.toHexDigits((byte) unicodeValue);
 
-
+                assemblyOutputBuilder.append("LDBA 0x00").append(hexValue).append(", i\nSTBA 0xFC16, d \n");
+                machineOutputBuilder.append("D0 00 ").append(hexValue).append(" F1 FC 16 \n");
             }
+            assemblyOutputBuilder.append("\nSTOP\n\n" + "\n.END");
+            machineOutputBuilder.append("00 zz");
             machineOutput = machineOutputBuilder.toString();
             assemblyOutput = assemblyOutputBuilder.toString();
-
-            assemblyOutput +=  ", d\nSTOP\n\n" +  "\n.END";
-
-
-
-
-            //TODO: finish this part
         } else if (input.contains("=")){
             //split up equation into key elements
             String[] equation = input.replaceAll(" ", "").split("[=+\\-;]");
