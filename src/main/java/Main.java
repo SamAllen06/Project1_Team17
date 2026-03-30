@@ -18,25 +18,34 @@ public class Main {
                 If you want to add or subtract, type it like this: result=3+5;""");
         String input = scanner.nextLine();
 
+        //Process print command
         if (input.toLowerCase().startsWith("system.out.println(\"") && input.endsWith("\");")) {
+            //Grab user message from input
             String command = input.split("\"")[1];
             System.out.println(command);
 
             StringBuilder assemblyOutputBuilder = new StringBuilder();
             StringBuilder machineOutputBuilder = new StringBuilder();
+            //Process output for one symbol at a time
             for (int i = 0; i < command.length(); i++){
                 char c = command.charAt(i);
+                //convert symbol to unicode
                 int unicodeValue = (int) c;
+                //convert unicode to hexadecimal
                 String hexValue = hex.toHexDigits((byte) unicodeValue);
 
+                //add output for a single symbol
                 assemblyOutputBuilder.append("LDBA 0x00").append(hexValue).append(", i\nSTBA 0xFC16, d \n");
                 machineOutputBuilder.append("D0 00 ").append(hexValue).append(" F1 FC 16 \n");
             }
+            //add output to end the command
             assemblyOutputBuilder.append("\nSTOP\n\n" + "\n.END");
             machineOutputBuilder.append("00 zz");
             machineOutput = machineOutputBuilder.toString();
             assemblyOutput = assemblyOutputBuilder.toString();
-        } else if (input.contains("=")){
+        }
+        //Process math command
+        else if (input.contains("=")){
             //split up equation into key elements
             String[] equation = input.replaceAll(" ", "").split("[=+\\-;]");
             //load first number to accumulator
